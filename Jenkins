@@ -1,0 +1,86 @@
+import groovy.json.JsonOutput
+properties([
+  buildDiscarder(logRotator(
+      artifactDaysToKeepStr: '',
+      artifactNumToKeepStr: '',
+      daysToKeepStr: '',
+      numToKeepStr: '10'
+  )),
+  pipelineTriggers([])
+])
+
+node('master')
+{
+         
+
+    //specifying variables for all stages
+    environment {
+        //project vars
+        def PROJECT_SCRATCH_PATH = “./01-sr-1/config/project-scratch-def.json”
+       def SCRATCH_ORG_NAME     = “SC0001”
+        def CC_4_6_ID            = “04t0V000001Dyaf”
+        def USER_NAME            = “sekarDevhub”
+
+
+        //SFDX vars
+       def SFDX_HOME                      = "${WORKSPACE}./config/project-scratch-def.json"
+        def SFDX_USE_GENERIC_UNIX_KEYCHAIN = true
+        def HUB_ORG                        = "sekarDevhub"
+        def SFDC_HOST                      = "https://login.salesforce.com"
+        def JWT_KEY_CRED_ID                = "c31ba234-a539-4d51-8c17-08fbfb896074"
+        def JWT_KEY_FILE                   = "~/.ssh/id_rsa_Jul09"
+        def CONNECTED_APP_CONSUMER_KEY     = "3MVG9G9pzCUSkzZu7GVkXTUx.097GgMZVxGaE_r8ogpwrW396I8i3IKvx1qNbl3wtL4zXVFJaKqOpKT4Hod6D"
+
+    }
+  
+
+      stage('Gitscm')
+      {
+    checkout([
+         $class: 'GitSCM', 
+         branches: [[name: '*/master']], 
+         doGenerateSubmoduleConfigurations: false, 
+         extensions: [], submoduleCfg: [], userRemoteConfigs: 
+         [[credentialsId: 'd5497717-f3e5-466f-8590-382607c75491', 
+         url: 'https://github.com/ServiceMax-Engineering/svmx-sfdc']]])
+         
+        
+
+         
+       } 
+       
+       stage('sc1')
+       {
+           
+           def PROJECT_SCRATCH_PATH = "/01-sr-1/config/project-scratch-def.json"
+       def SCRATCH_ORG_NAME     = "SC0001"
+        def CC_4_6_ID            = "04t0V000001Dyaf"
+        def USER_NAME            = "sekarDevhub"
+
+
+        //SFDX vars
+       def SFDX_HOME                      = "${WORKSPACE}/config/project-scratch-def.json"
+        def SFDX_USE_GENERIC_UNIX_KEYCHAIN = true
+        def HUB_ORG                        = "sekarDevhub"
+        def SFDC_HOST                      = "https://login.salesforce.com"
+        def JWT_KEY_CRED_ID                = "c31ba234-a539-4d51-8c17-08fbfb896074"
+        def JWT_KEY_FILE                   = "~/.ssh/id_rsa_Jul09"
+        def CONNECTED_APP_CONSUMER_KEY     = "3MVG9G9pzCUSkzZu7GVkXTUx.097GgMZVxGaE_r8ogpwrW396I8i3IKvx1qNbl3wtL4zXVFJaKqOpKT4Hod6D"
+
+    
+       echo '2. Creating Scratch Org'
+       echo '${SFDX_HOME}'
+        echo 'where it is running????Running ${env.BUILD_ID} on ${env.JENKINS_URL}'
+                        def orgStatus = sh returnStdout: true, script: "${SFDX_HOME}/sfdx force:org:create -s -f ${PROJECT_SCRATCH_PATH} -v ${HUB_ORG} -a ${SCRATCH_ORG_NAME} -d 1"
+                        if (!orgStatus.contains("Successfully created scratch org")) {
+                            error "Scratch Org creation failed"
+                        } else {
+                            echo orgStatus
+                        }
+       }
+
+       
+    }
+
+                        
+
