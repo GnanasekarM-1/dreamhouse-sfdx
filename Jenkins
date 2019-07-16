@@ -23,7 +23,7 @@ node('master')
 
 
         //SFDX vars
-def toolbelt = tool 'toolbelt'
+def sfdx = tool 'sfdx'
         def SFDX_USE_GENERIC_UNIX_KEYCHAIN = true
         def HUB_ORG                        = "sekarDevhub"
         def SFDC_HOST                      = "https://login.salesforce.com"
@@ -59,7 +59,7 @@ def toolbelt = tool 'toolbelt'
 
 
         //SFDX vars
-def toolbelt = tool 'toolbelt'
+def sfdx = tool 'sfdx'
         def SFDX_USE_GENERIC_UNIX_KEYCHAIN = true
         def HUB_ORG                        = "sekarDevhub"
         def SFDC_HOST                      = "https://login.salesforce.com"
@@ -69,9 +69,9 @@ def toolbelt = tool 'toolbelt'
 
     
        echo '2. Creating Scratch Org'
-       echo '${toolbelt}'
+       echo '${sfdx}'
         echo 'where it is running????Running ${env.BUILD_ID} on ${env.JENKINS_URL}'
-                        def orgStatus = sh returnStdout: true, script: "${toolbelt}/sfdx force:org:create -s -f ${PROJECT_SCRATCH_PATH} -v ${HUB_ORG} -a ${SCRATCH_ORG_NAME} -d 1"
+                        def orgStatus = sh returnStdout: true, script: "${sfdx}/sfdx force:org:create -s -f ${PROJECT_SCRATCH_PATH} -v ${HUB_ORG} -a ${SCRATCH_ORG_NAME} -d 1"
                         if (!orgStatus.contains("Successfully created scratch org")) {
                             error "Scratch Org creation failed"
                         } else {
