@@ -16,7 +16,7 @@ node('master')
     //specifying variables for all stages
     environment {
         //project vars
-        def PROJECT_SCRATCH_PATH = “./01-sr-1/config/project-scratch-def.json”
+        def PROJECT_SCRATCH_PATH = “./config/project-scratch-def.json”
        def SCRATCH_ORG_NAME     = “SC0001”
         def CC_4_6_ID            = “04t0V000001Dyaf”
         def USER_NAME            = “sekarDevhub”
@@ -52,7 +52,7 @@ def toolbelt = tool 'toolbelt'
        stage('sc1')
        {
            
-        def PROJECT_SCRATCH_PATH = "/01-sr-1/config/project-scratch-def.json"
+        def PROJECT_SCRATCH_PATH = "/config/project-scratch-def.json"
        def SCRATCH_ORG_NAME     = "SC0001"
         def CC_4_6_ID            = "04t0V000001Dyaf"
         def USER_NAME            = "sekarDevhub"
